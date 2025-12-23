@@ -26,7 +26,8 @@ public partial class ThrowExceptionPage : ContentPage
     public ThrowExceptionPage()
 	{
 		InitializeComponent();
-	}
+        BindingContext = this;
+    }
    
 #if ANDROID
     // Crash a nivel MAUI
@@ -93,8 +94,11 @@ public partial class ThrowExceptionPage : ContentPage
     private void BtnLogs_Clicked(object sender, EventArgs e)
     {
 #if ANDROID
-        var logs = FileLoggerService.Instance?.GetLogContent();
-        Logs = logs ?? "No hay logs disponibles";
+        var diagnostics = FileLoggerService.Instance?.GetLogDiagnostics() ?? "Servicio NULL";
+        var logs = FileLoggerService.Instance?.GetLogContent() ?? "No hay logs";
+
+        // Mostrar tanto diagnósticos como logs
+        Logs = $"{diagnostics}\n\n=== CONTENIDO DEL LOG ===\n{logs}";
 #endif
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Ejemplo_1.Pages;
+using Ejemplo_1.Services;
 using Microsoft.Extensions.Logging;
 
 namespace Ejemplo_1
@@ -16,7 +17,11 @@ namespace Ejemplo_1
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
-            builder.Services.AddSingleton<Services.StatusReport>();
+            _=new FileLoggerService();
+
+            builder.Services.AddSingleton<FileLoggerService>();
+            builder.Services.AddSingleton<StatusReport>();
+
             builder.Services.AddSingleton<ThrowExceptionPage>();
             builder.Services.AddSingleton<MainPage>();
 

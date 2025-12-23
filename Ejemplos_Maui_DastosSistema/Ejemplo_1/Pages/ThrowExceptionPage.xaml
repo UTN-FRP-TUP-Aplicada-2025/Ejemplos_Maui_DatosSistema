@@ -3,20 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Ejemplo_1.Pages.ThrowExceptionPage"
              Title="ThrowExceptionPage">
-    <VerticalStackLayout>
-        <Button Text="Crash a nivel MAUI" Clicked="OnMauiCrashClicked"/>
-        <Button Text="Crash en Task no observada" Clicked="OnUnobservedTaskCrashClicked"/>
-        <Button Text="Stack Overflow" Clicked="OnStackOverflowClicked"/>
-        <Button Text="Out of Memory" Clicked="OnOutOfMemoryClicked"/>
 
-        <Button Text="Android Crash Thread" Clicked="OnAndroidMainThreadCrashClicked"/>
-        <Button Text="Android Crash JNI" Clicked="OnJniCrashClicked"/>
-        <Button Text="Android Crash Seg" Clicked="OnSegfaultClicked"/>
+    <ScrollView>
 
-        <VerticalStackLayout Padding="30,0" Spacing="25">
-            <Label Text="{Binding Path=Logs}"/>
+        <VerticalStackLayout>
+            <Button Text="Crash a nivel MAUI" Clicked="OnMauiCrashClicked"/>
+            <Button Text="Crash en Task no observada" Clicked="OnUnobservedTaskCrashClicked"/>
+            <Button Text="Stack Overflow" Clicked="OnStackOverflowClicked"/>
+            <Button Text="Out of Memory" Clicked="OnOutOfMemoryClicked"/>
 
-            <Button Text="Logs" Clicked="BtnLogs_Clicked"/>
+            <Button Text="Android Crash Thread" Clicked="OnAndroidMainThreadCrashClicked"/>
+            <Button Text="Android Crash JNI" Clicked="OnJniCrashClicked"/>
+            <Button Text="Android Crash Seg" Clicked="OnSegfaultClicked"/>
+
+            <VerticalStackLayout Padding="30,0" Spacing="25">
+                <Label Text="{Binding Path=Logs}"/>
+
+                <Button Text="Logs" Clicked="BtnLogs_Clicked"/>
+            </VerticalStackLayout>
         </VerticalStackLayout>
-    </VerticalStackLayout>
+
+    </ScrollView>
 </ContentPage>

@@ -26,7 +26,7 @@ public class FileLogger
     }
 
     /// <summary>
-    /// Registra un mensaje en el archivo de log
+    /// Registra un mensaje en el archivo de log con flush inmediato
     /// </summary>
     public void Log(string message, LogLevel level = LogLevel.Info)
     {
@@ -47,7 +47,14 @@ public class FileLogger
                 var timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
                 var logEntry = $"[{timestamp}] [{level}] {message}{Environment.NewLine}";
 
-                File.AppendAllText(_logFilePath, logEntry, Encoding.UTF8);
+                // Usar FileStream para garantizar escritura inmediata en disco
+                using (var fs = new FileStream(_logFilePath, FileMode.Append, FileAccess.Write, FileShare.Read))
+                using (var writer = new StreamWriter(fs, Encoding.UTF8))
+                {
+                    writer.Write(logEntry);
+                    writer.Flush();
+                    fs.Flush();
+                }
             }
         }
         catch (Exception ex)

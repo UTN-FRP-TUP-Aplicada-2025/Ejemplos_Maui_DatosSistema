@@ -19,6 +19,8 @@ public class FileLoggerService
     public FileLoggerService()
     {
         _instance = this;
+        // Log de inicialización para verificar que el servicio se creó
+        _logger.Log("FileLoggerService inicializado", LogLevel.Info);
     }
 
     /// <summary>
@@ -76,6 +78,41 @@ public class FileLoggerService
     public void ClearLogs()
     {
         _logger.ClearLog();
+    }
+
+    /// <summary>
+    /// Obtiene información de diagnóstico del archivo de log
+    /// </summary>
+    public string GetLogDiagnostics()
+    {
+        try
+        {
+            var logPath = GetLogFilePath();
+            var diagnostics = new StringBuilder();
+
+            diagnostics.AppendLine("=== DIAGNÓSTICO DE LOGS ===");
+            diagnostics.AppendLine($"Ruta del archivo: {logPath}");
+            diagnostics.AppendLine($"Archivo existe: {File.Exists(logPath)}");
+
+            if (File.Exists(logPath))
+            {
+                var fileInfo = new FileInfo(logPath);
+                diagnostics.AppendLine($"Tamaño del archivo: {fileInfo.Length} bytes");
+                diagnostics.AppendLine($"Última modificación: {fileInfo.LastWriteTime}");
+                diagnostics.AppendLine($"Instancia del servicio: {(Instance != null ? "Inicializada" : "NULL")}");
+            }
+            else
+            {
+                diagnostics.AppendLine("⚠️ El archivo de log no existe aún");
+                diagnostics.AppendLine($"Instancia del servicio: {(Instance != null ? "Inicializada" : "NULL")}");
+            }
+
+            return diagnostics.ToString();
+        }
+        catch (Exception ex)
+        {
+            return $"Error obteniendo diagnósticos: {ex.Message}";
+        }
     }
 
 #if ANDROID

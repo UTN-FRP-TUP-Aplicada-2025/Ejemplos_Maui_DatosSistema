@@ -1,5 +1,6 @@
 ﻿using Android.App;
 using Android.Runtime;
+using Ejemplo_1.Services;
 
 namespace Ejemplo_1;
 
@@ -17,19 +18,23 @@ public class MainApplication : MauiApplication
     {
         base.OnCreate();
 
+        // Capturar excepciones de Android
         AndroidEnvironment.UnhandledExceptionRaiser += (sender, e) =>
         {
             try
             {
-                //var crashReporter = new CrashReporterService();
-               // crashReporter.SendAsync(e.Exception);
+                var exception = e.Exception;
+                FileLoggerService.Instance?.LogException(
+                    exception,
+                    "Excepción no manejada en AndroidEnvironment"
+                );
             }
-            catch
+            catch (Exception ex)
             {
-                // nunca lanzar nada acá
+                System.Diagnostics.Debug.WriteLine($"Error logging exception: {ex.Message}");
             }
 
-            // true = Android considera que ya lo manejaste
+            // Marcar como manejado para evitar crash
             e.Handled = true;
         };
     }
