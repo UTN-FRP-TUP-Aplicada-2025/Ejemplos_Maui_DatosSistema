@@ -8,7 +8,6 @@
         <Button Text="Crash a nivel MAUI" Clicked="OnMauiCrashClicked"/>
         <Button Text="Crash en Task no observada" Clicked="OnUnobservedTaskCrashClicked"/>
         <Button Text="Stack Overflow" Clicked="OnStackOverflowClicked"/>
-        <Button Text="Out of Memory" Clicked="OnOutOfMemoryClicked"/>
 
         <Button Text="Android Crash Thread" Clicked="OnAndroidMainThreadCrashClicked"/>
         <Button Text="Android Crash JNI" Clicked="OnJniCrashClicked"/>
