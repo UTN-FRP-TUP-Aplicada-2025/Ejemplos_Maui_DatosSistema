@@ -13,8 +13,6 @@
         <Button Text="Android Crash Thread" Clicked="OnAndroidMainThreadCrashClicked"/>
         <Button Text="Android Crash JNI" Clicked="OnJniCrashClicked"/>
         <Button Text="Android Crash Seg" Clicked="OnSegfaultClicked"/>
-
-    
     </VerticalStackLayout>
 
 </ContentPage>

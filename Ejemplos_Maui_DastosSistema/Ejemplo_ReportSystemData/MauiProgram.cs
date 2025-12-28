@@ -20,7 +20,9 @@ public static class MauiProgram
             });
 
         string nombreArchivo = "mi_aplicacion.log";
+
         string rutaLogs = Path.Combine(FileSystem.AppDataDirectory, nombreArchivo);
+
         builder.Logging.AddProvider(new FileLoggerProvider(rutaLogs));
         builder.Services.AddSingleton<ILogReaderService>(new LogReaderService(rutaLogs));
                 
@@ -29,6 +31,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<InfoSystemService>();
 
         builder.Services.AddSingleton<LogClientReportApiService>();
+
 
         return builder.Build();
     }

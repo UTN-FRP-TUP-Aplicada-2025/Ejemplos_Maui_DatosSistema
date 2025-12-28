@@ -53,9 +53,9 @@ public partial class MainPage : ContentPage
         }
     }
 
-    private void OnThrowExceptionPageClicked(object? sender, EventArgs e)
+    async private void OnThrowExceptionPageClicked(object? sender, EventArgs e)
     {
 
-        Shell.Current.GoToAsync(nameof(ThrowExceptionPage));
+        await Shell.Current.GoToAsync("ThrowExceptionPage");
     }
 }
