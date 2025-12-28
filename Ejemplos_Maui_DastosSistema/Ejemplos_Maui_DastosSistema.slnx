@@ -1,3 +1,7 @@
 <Solution>
-  <Project Path="Ejemplo_1/Ejemplo_1.csproj" />
+  <Project Path="Ejemplo_InfoApp/Ejemplo_InfoApp.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+  <Project Path="Ejemplo_ReportSystemData/Ejemplo_ReportSystemData.csproj" Id="aba5e6fd-af95-4d80-bb7c-25a5cac1b889" />
+  <Project Path="WebAPI_DatosSistema/WebAPI_DatosSistema.csproj" Id="bd77ca47-017a-4e01-85d4-7c51b2047d9e" />
 </Solution>

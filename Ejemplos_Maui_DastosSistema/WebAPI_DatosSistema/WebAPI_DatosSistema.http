@@ -1,0 +1,6 @@
+@WebAPI_DatosSistema_HostAddress = http://localhost:5120
+
+GET {{WebAPI_DatosSistema_HostAddress}}/ReporLogs/
+Accept: application/json
+
+###

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Ejemplo_ReportSystemData.Pages.ThrowExceptionPage"
+             Title="ThrowExceptionPage">
+
+    <VerticalStackLayout Padding="25">
+        <Button Text="Crash a nivel MAUI" Clicked="OnMauiCrashClicked"/>
+        <Button Text="Crash en Task no observada" Clicked="OnUnobservedTaskCrashClicked"/>
+        <Button Text="Stack Overflow" Clicked="OnStackOverflowClicked"/>
+        <Button Text="Out of Memory" Clicked="OnOutOfMemoryClicked"/>
+
+        <Button Text="Android Crash Thread" Clicked="OnAndroidMainThreadCrashClicked"/>
+        <Button Text="Android Crash JNI" Clicked="OnJniCrashClicked"/>
+        <Button Text="Android Crash Seg" Clicked="OnSegfaultClicked"/>
+
+    
+    </VerticalStackLayout>
+
+</ContentPage>
