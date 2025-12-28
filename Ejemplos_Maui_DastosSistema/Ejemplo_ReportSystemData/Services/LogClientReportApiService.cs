@@ -1,4 +1,5 @@
 ﻿using Ejemplo_ReportSystemData.DTOs;
+using System.Net.Http;
 using System.Text.Json;
 
 namespace Ejemplo_ReportSystemData.Services;
@@ -6,10 +7,12 @@ namespace Ejemplo_ReportSystemData.Services;
 public class LogClientReportApiService
 {
     private readonly InfoSystemService _systemInfo=default!;
+    private readonly HttpClient _httpClient;
 
-    public LogClientReportApiService(InfoSystemService systemInfo)
+    public LogClientReportApiService(InfoSystemService systemInfo, HttpClient httpClient)
     {
         _systemInfo = systemInfo;
+        _httpClient = httpClient;
     }
 
     async public Task SendCatlogReportAsync()
@@ -25,7 +28,7 @@ public class LogClientReportApiService
             InfoProcessor = _systemInfo.GetProcessorInfoText(),
             InfoApp = "1.0.0",
             Containt = _systemInfo.GetContentLogcat(),
-            TipoContaint = "filelog",             
+            TipoContaint = "LOGCAT",             
         };
 
         var jsonContent = JsonSerializer.Serialize(reporte);
@@ -38,11 +41,11 @@ public class LogClientReportApiService
 
         try
         {
-            using var httpClient = new HttpClient();
-            httpClient.Timeout = TimeSpan.FromSeconds(30);
-            var response = await httpClient.SendAsync(request);
+            //using var httpClient = new HttpClient();
+            //httpClient.Timeout = TimeSpan.FromSeconds(30);
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
 
-            if (response.IsSuccessStatusCode)
+             if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine("Reporte enviado exitosamente.");
             }
@@ -74,15 +77,13 @@ public class LogClientReportApiService
             InfoProcessor = _systemInfo.GetProcessorInfoText(),
             InfoApp = "1.0.0",
             Containt = _systemInfo.GetContentFileLog(),
-            TipoContaint = "logcat",
+            TipoContaint = "FILELOG",
         };
 
         _systemInfo.ClearFileLog();
 
         var jsonContent = JsonSerializer.Serialize(reporte);
         int jsonSize = System.Text.Encoding.UTF8.GetByteCount(jsonContent);
-
-        
 
 
         var request = new HttpRequestMessage(HttpMethod.Post, apiUrl)
@@ -95,14 +96,14 @@ public class LogClientReportApiService
             // using var httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(30) }; 
 
 #if DEBUG
-            var handler = new HttpClientHandler();
-            handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
-            using var httpClient = new HttpClient(handler);
+            //var handler = new HttpClientHandler();
+            //handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+           //using var httpClient = new HttpClient(handler);
 #else
-    using var httpClient = new HttpClient();
+    //using var httpClient = new HttpClient();
 #endif
 
-            HttpResponseMessage response = await httpClient.SendAsync(request);
+            HttpResponseMessage response = await _httpClient.SendAsync(request);
 
             if (response.IsSuccessStatusCode)
             {

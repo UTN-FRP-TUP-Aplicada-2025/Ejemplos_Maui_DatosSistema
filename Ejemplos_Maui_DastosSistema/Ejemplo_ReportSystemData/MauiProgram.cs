@@ -21,6 +21,9 @@ public static class MauiProgram
 
         string nombreArchivo = "mi_aplicacion.log";
 
+        //Microsoft.Extensions.Http
+        builder.Services.AddHttpClient();
+
         string rutaLogs = Path.Combine(FileSystem.AppDataDirectory, nombreArchivo);
 
         builder.Logging.AddProvider(new FileLoggerProvider(rutaLogs));

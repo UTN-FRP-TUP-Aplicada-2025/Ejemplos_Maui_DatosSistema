@@ -30,27 +30,30 @@ namespace Ejemplo_ReportSystemData
 
         protected override void OnStart()
         {
-            base.OnStart();
+            base.OnStart(); // Siempre llama a la base primero
+
+            // Ejecutamos la lógica de logs sin bloquear el hilo de UI
+            // y sin usar .GetResult() que causa Deadlocks
+            try
+            {
+                Task.Run(async () => await InicializarLogsAsync());
+            }
+            catch (Exception ex)
+            { 
+            }
+        }
+
+        private async Task InicializarLogsAsync()
+        {
 
             try
             {
                 _logger.LogInformation("OnStart(): Enviando reporte");
-                //_logReporter.SendAndClearFileLogReportAsync().GetAwaiter().GetResult();
-                //
-                Task.Run(async () =>
-                {
-                    try
-                    {
-                        await _logReporter.SendAndClearFileLogReportAsync();
-                        await _logReporter.SendCatlogReportAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        // Importante: Loguear aquí porque dentro de Task.Run 
-                        // los errores no saltan al try-catch de afuera.
-                        System.Diagnostics.Debug.WriteLine($"[App] Error en tarea de reporte: {ex.Message}");
-                    }
-                });
+                
+                
+                await _logReporter.SendAndClearFileLogReportAsync();
+                await _logReporter.SendCatlogReportAsync();
+                
             }
             catch (Exception ex)
             {
