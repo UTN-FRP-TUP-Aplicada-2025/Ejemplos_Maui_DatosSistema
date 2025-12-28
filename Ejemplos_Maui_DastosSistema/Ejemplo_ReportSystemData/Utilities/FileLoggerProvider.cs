@@ -12,4 +12,6 @@ public class FileLoggerProvider : ILoggerProvider
     public ILogger CreateLogger(string categoryName) => new SimpleFileLogger(_filePath);
 
     public void Dispose() { }
+
+
 }

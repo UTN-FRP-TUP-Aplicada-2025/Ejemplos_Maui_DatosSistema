@@ -3,7 +3,7 @@
 using Java.Interop;
 using Java.Lang;
 
-namespace Ejemplo_1.Platforms.Android.Utilities;
+namespace Ejemplo_InfoApp.Platforms.Android.Utilities;
 
 public static class AndroidCrashTestHelper
 {

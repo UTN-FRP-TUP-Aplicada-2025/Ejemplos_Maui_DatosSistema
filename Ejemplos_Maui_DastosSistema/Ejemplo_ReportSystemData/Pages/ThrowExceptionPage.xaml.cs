@@ -7,6 +7,12 @@ namespace Ejemplo_ReportSystemData.Pages;
 
 public partial class ThrowExceptionPage : ContentPage
 {
+    public ThrowExceptionPage()
+    {
+        InitializeComponent();
+        BindingContext = this;
+    }
+
 #if ANDROID
     // Crash a nivel MAUI
     private void OnMauiCrashClicked(object sender, EventArgs e)
@@ -53,21 +59,18 @@ public partial class ThrowExceptionPage : ContentPage
     private void OnUnobservedTaskCrashClicked(object sender, EventArgs e) { }
     private void OnStackOverflowClicked(object sender, EventArgs e) { }
 
-    private void OnAndroidMainThreadCrashClicked(object sender, EventArgs e)
-    {
-        
-    }
+    private void OnOutOfMemoryClicked(object sender, EventArgs e){ }
+    private void OnAndroidMainThreadCrashClicked(object sender, EventArgs e){ }
+    private void OnJniCrashClicked(object sender, EventArgs e){ }
+    private void OnSegfaultClicked(object sender, EventArgs e){ }
 
-    private void OnJniCrashClicked(object sender, EventArgs e)
-    {
-       
-    }
-
-    private void OnSegfaultClicked(object sender, EventArgs e)
-    {
-        
-    }
 #endif
 
-    
+    async private void OnVolverClicked(object? sender, EventArgs e)
+    {
+        //exception: await Shell.Current.GoToAsync(nameof(Pages.MainPage));
+
+        await Shell.Current.GoToAsync("///MainPage");
+        //await Shell.Current.GoToAsync("..");
+    }
 }

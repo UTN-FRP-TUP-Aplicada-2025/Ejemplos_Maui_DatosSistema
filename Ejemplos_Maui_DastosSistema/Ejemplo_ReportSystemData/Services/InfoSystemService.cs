@@ -1,10 +1,13 @@
 ﻿#if ANDROID
 using Android.App;
 using Android.Content;
+
+
 #endif
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Ejemplo_ReportSystemData.Utilities;
 
 namespace Ejemplo_ReportSystemData.Services;
 
@@ -273,11 +276,19 @@ public class InfoSystemService
 
     public string GetContentFileLog()
     {
-        return _logReaderService.ReadLogs();
+        string lineas = _logReaderService.ReadLogs(600);
+    
+        return lineas;
     }
+
+    public void ClearFileLog()
+    {
+        _logReaderService.ClearLogs();
+    }
+
 
     public string GetContentLogcat()
     {
-        return _soLoggerService.GetLoggerInfo();
+        return _soLoggerService.GetLogsByLevel(LogcatLogLevel.ALL, 600);
     }
 }

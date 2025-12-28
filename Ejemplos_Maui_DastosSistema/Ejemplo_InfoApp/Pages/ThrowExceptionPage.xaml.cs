@@ -1,10 +1,12 @@
 namespace Ejemplo_InfoApp.Pages;
 
-using Ejemplo_1.Platforms.Android.Utilities;
+
 
 #if ANDROID
 using Ejemplo_InfoApp.Services;
 using Ejemplo_InfoApp.Utilites;
+
+using Ejemplo_InfoApp.Platforms.Android.Utilities;
 #endif
 
 public partial class ThrowExceptionPage : ContentPage

@@ -32,30 +32,66 @@ namespace Ejemplo_ReportSystemData
         {
             base.OnStart();
 
-            System.Diagnostics.Debug.WriteLine("OnStart");
-
             try
             {
-                //string Logcat = _logReader.ReadLogs();
-
-                //_logReporter.SendLogReportAsync("","").GetAwaiter().GetResult();
-
-                //_logReader.ClearLogs();
+                _logger.LogInformation("OnStart(): Enviando reporte");
+                //_logReporter.SendAndClearFileLogReportAsync().GetAwaiter().GetResult();
+                //
+                Task.Run(async () =>
+                {
+                    try
+                    {
+                        await _logReporter.SendAndClearFileLogReportAsync();
+                        await _logReporter.SendCatlogReportAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Importante: Loguear aquí porque dentro de Task.Run 
+                        // los errores no saltan al try-catch de afuera.
+                        System.Diagnostics.Debug.WriteLine($"[App] Error en tarea de reporte: {ex.Message}");
+                    }
+                });
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[App] Error enviando reporte de logs: {ex.Message}");
             }
-            
         }
 
         private async void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            //Captura excepciones no manejadas del dominio de la app.
+            try
+            {
+                var exception = e.ExceptionObject as Exception;
 
+                if (exception != null)
+                {
+                    _logger.LogError(exception, "Excepción no manejada capturada");
 
+                    _logger.LogError($"Mensaje: {exception.Message}");
+                    _logger.LogError($"Tipo: {exception.GetType().Name}");
+                    _logger.LogError($"StackTrace: {exception.StackTrace}");
+                    _logger.LogError($"Source: {exception.Source}");
 
-           
+                    if (exception.InnerException != null)
+                    {
+                        _logger.LogError($"Inner Exception: {exception.InnerException.Message}");
+                        _logger.LogError($"Inner StackTrace: {exception.InnerException.StackTrace}");
+                    }
+
+                    _logger.LogError($"¿Terminará la aplicación?: {e.IsTerminating}");
+
+                }
+                else
+                {
+                    _logger.LogError($"Excepción no estándar: {e.ExceptionObject}");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Si falla el logging, al menos intentar escribir en Debug
+                System.Diagnostics.Debug.WriteLine($"Error al loguear excepción no manejada: {ex.Message}");
+            }
         }
 
         private async void TaskScheduler_UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)

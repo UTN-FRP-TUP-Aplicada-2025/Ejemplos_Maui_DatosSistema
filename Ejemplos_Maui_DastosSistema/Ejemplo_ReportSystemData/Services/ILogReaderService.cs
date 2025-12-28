@@ -3,5 +3,6 @@
 public interface ILogReaderService
 {
     string ReadLogs();
+    string ReadLogs(int maxLines = 50);
     void ClearLogs();
 }

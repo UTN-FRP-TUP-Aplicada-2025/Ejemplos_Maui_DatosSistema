@@ -5,14 +5,13 @@ namespace Ejemplo_ReportSystemData.Pages;
 
 public partial class MainPage : ContentPage
 {
-
     private readonly LogClientReportApiService _logReporter;
     private readonly ILogger<MainPage> _logger;
 
-    public MainPage(ILogger<MainPage> logger, SOLoggerService sologger, LogClientReportApiService logReporter)
+    public MainPage(ILogger<MainPage> logger, LogClientReportApiService logReporter)
     {
         InitializeComponent();
-        BindingContext = this;
+        this.BindingContext = this;
         
         _logReporter = logReporter;
         _logger = logger;
@@ -25,12 +24,11 @@ public partial class MainPage : ContentPage
 
     private void OnFileLogTestAPIClicked(object? sender, EventArgs e)
     {
-
-        System.Diagnostics.Debug.WriteLine("OnStart");
+        System.Diagnostics.Debug.WriteLine("OnFileLogTestAPIClicked");
 
         try
         {
-            _logReporter.SendCatlogReportAsync().GetAwaiter().GetResult();
+            _logReporter.SendAndClearFileLogReportAsync().GetAwaiter().GetResult();
         }
         catch (Exception ex)
         {
@@ -40,8 +38,7 @@ public partial class MainPage : ContentPage
 
     private void OnLogcastTestAPIClicked(object? sender, EventArgs e)
     {
-
-        System.Diagnostics.Debug.WriteLine("OnStart");
+        System.Diagnostics.Debug.WriteLine("OnLogcastTestAPIClicked");
 
         try
         {
@@ -55,7 +52,6 @@ public partial class MainPage : ContentPage
 
     async private void OnThrowExceptionPageClicked(object? sender, EventArgs e)
     {
-
-        await Shell.Current.GoToAsync("ThrowExceptionPage");
+        await Shell.Current.GoToAsync(nameof(Pages.ThrowExceptionPage));
     }
 }
