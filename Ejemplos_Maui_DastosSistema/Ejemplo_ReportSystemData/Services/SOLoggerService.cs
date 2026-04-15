@@ -33,6 +33,11 @@ public class SOLoggerService
     }
 
     //Obtener logs por nivel específico
+    public async Task<string> GetLogsByLevelAsync(LogcatLogLevel level, int maxLines = 200)
+    {
+        return await Task.Run(() => GetLogsByLevel(level, maxLines));
+    }
+
     public string GetLogsByLevel(LogcatLogLevel level, int maxLines = 200)
     {
         string logcat = string.Empty;

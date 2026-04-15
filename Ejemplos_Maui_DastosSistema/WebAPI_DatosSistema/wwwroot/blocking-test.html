@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebView Blocking Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button.danger {
+            background-color: #dc3545;
+        }
+        button.danger:hover {
+            background-color: #c82333;
+        }
+        #status {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            border-radius: 4px;
+        }
+        .log {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>?? WebView Blocking Test Suite</h1>
+        <p>Pruebas de deadlock y bloqueos en WebView de MAUI</p>
+        
+        <div class="button-group">
+            <button class="danger" onclick="infiniteLoop()">
+                ?? Infinite Loop (Bloqueo Total)
+            </button>
+            
+            <button class="danger" onclick="recursiveLoop()">
+                ?? Deep Recursive Call (Stack Overflow)
+            </button>
+            
+            <button class="danger" onclick="memoryHog()">
+                ?? Memory Hog (Consumo Masivo)
+            </button>
+            
+            <button class="danger" onclick="busyWait()">
+                ?? Busy Wait Spin (CPU al 100%)
+            </button>
+            
+            <button class="danger" onclick="deadlockSimulation()">
+                ?? Deadlock Simulation (Sincronización)
+            </button>
+            
+            <button class="danger" onclick="recursivePromiseLoop()">
+                ?? Promise Chain Explosion (Event Loop)
+            </button>
+            
+            <button class="danger" onclick="infiniteEventLoop()">
+                ?? Infinite Event Loop (DOM Thrashing)
+            </button>
+            
+            <button style="background-color: #28a745;" onclick="reset()">
+                ? Reset / Clear Logs
+            </button>
+        </div>
+        
+        <div id="status">
+            <strong>Estado:</strong> Listo para pruebas
+        </div>
+        
+        <div class="log" id="log">
+            Logs aparecerán aquí...
+        </div>
+    </div>
+
+    <script>
+        const logElement = document.getElementById('log');
+        const statusElement = document.getElementById('status');
+        
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            logElement.innerHTML += `[${timestamp}] ${message}<br>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function updateStatus(message, type = 'info') {
+            const colors = {
+                'info': '#2196F3',
+                'warning': '#ff9800',
+                'error': '#f44336'
+            };
+            statusElement.style.borderLeftColor = colors[type];
+            statusElement.innerHTML = `<strong>Estado:</strong> ${message}`;
+        }
+
+        // 1. Infinite Loop - Bloquea completamente el thread
+        function infiniteLoop() {
+            updateStatus('?? Infinite Loop iniciado...', 'error');
+            log('?? Iniciando Infinite Loop - Bloqueo Total');
+            
+            try {
+                let counter = 0;
+                while (true) {
+                    counter++;
+                    if (counter % 10000000 === 0) {
+                        // Este log nunca se verá porque el thread está bloqueado
+                        console.log('Iteration:', counter);
+                    }
+                }
+            } catch (e) {
+                log('Error: ' + e.message);
+            }
+        }
+
+        // 2. Deep Recursive Calls - Stack Overflow
+        function recursiveLoop() {
+            updateStatus('?? Recursive Loop iniciado...', 'error');
+            log('?? Iniciando Deep Recursive Call');
+            
+            function deepRecursion(depth = 0) {
+                if (depth < 50000) {  // Muy profundo
+                    deepRecursion(depth + 1);
+                }
+            }
+            
+            try {
+                deepRecursion();
+            } catch (e) {
+                log('Stack Overflow: ' + e.message);
+                updateStatus('Stack Overflow detectado', 'error');
+            }
+        }
+
+        // 3. Memory Hog - Agota memoria
+        function memoryHog() {
+            updateStatus('?? Memory Hog iniciado...', 'error');
+            log('?? Iniciando consumo masivo de memoria');
+            
+            try {
+                const arrays = [];
+                for (let i = 0; i < 100000; i++) {
+                    // Crear arrays gigantes
+                    const largeArray = new Array(10000).fill(
+                        'x'.repeat(1000) + Math.random().toString()
+                    );
+                    arrays.push(largeArray);
+                    
+                    if (i % 1000 === 0) {
+                        log(`Memory allocation: ${i} arrays`);
+                    }
+                }
+            } catch (e) {
+                log('Out of Memory: ' + e.message);
+                updateStatus('Out of Memory', 'error');
+            }
+        }
+
+        // 4. Busy Wait - CPU al 100%
+        function busyWait() {
+            updateStatus('?? Busy Wait iniciado...', 'error');
+            log('?? Iniciando Busy Wait Spin (CPU al 100%)');
+            
+            const start = Date.now();
+            while (Date.now() - start < 300000) {  // 5 minutos de busy wait
+                // Empty loop - consume CPU sin hacer nada
+                Math.sqrt(Math.random());
+            }
+            
+            updateStatus('Busy Wait completado', 'warning');
+        }
+
+        // 5. Deadlock Simulation - Simulación de deadlock
+        function deadlockSimulation() {
+            updateStatus('?? Deadlock Simulation iniciado...', 'error');
+            log('?? Iniciando simulación de Deadlock');
+            
+            let lock1 = false;
+            let lock2 = false;
+            
+            function thread1() {
+                while (true) {
+                    if (!lock1) {
+                        lock1 = true;
+                        if (lock2) {
+                            // Espera infinita
+                            while (lock2) {
+                                // Busy wait
+                            }
+                        }
+                        lock1 = false;
+                    }
+                }
+            }
+            
+            function thread2() {
+                while (true) {
+                    if (!lock2) {
+                        lock2 = true;
+                        if (lock1) {
+                            // Espera infinita
+                            while (lock1) {
+                                // Busy wait
+                            }
+                        }
+                        lock2 = false;
+                    }
+                }
+            }
+            
+            // Iniciar ambas funciones
+            let counter1 = 0;
+            let counter2 = 0;
+            
+            while (true) {
+                counter1++;
+                counter2++;
+                if (counter1 > 1000000 && counter2 > 1000000) {
+                    lock1 = !lock1;
+                    lock2 = !lock2;
+                    counter1 = 0;
+                    counter2 = 0;
+                }
+            }
+        }
+
+        // 6. Promise Chain Explosion
+        function recursivePromiseLoop() {
+            updateStatus('?? Promise Chain iniciado...', 'error');
+            log('?? Iniciando Promise Chain Explosion');
+            
+            function chainPromises(depth = 0) {
+                if (depth < 100000) {
+                    return Promise.resolve()
+                        .then(() => {
+                            log(`Promise depth: ${depth}`);
+                            return chainPromises(depth + 1);
+                        });
+                }
+            }
+            
+            chainPromises().catch(e => {
+                log('Promise Error: ' + e.message);
+                updateStatus('Promise Chain Error', 'error');
+            });
+        }
+
+        // 7. Infinite Event Loop - DOM Thrashing
+        function infiniteEventLoop() {
+            updateStatus('?? Infinite Event Loop iniciado...', 'error');
+            log('?? Iniciando Infinite Event Loop con DOM Thrashing');
+            
+            function thrashDOM() {
+                const div = document.createElement('div');
+                div.textContent = 'Thrashing... ' + Math.random();
+                document.body.appendChild(div);
+                
+                setTimeout(thrashDOM, 0);  // Próximo evento inmediatamente
+            }
+            
+            thrashDOM();
+        }
+
+        // Reset
+        function reset() {
+            logElement.innerHTML = 'Logs limpios - Presiona F12 para ver console.log<br>';
+            updateStatus('Sistema reseteado', 'info');
+            log('Reset completado');
+        }
+
+        // Log inicial
+        log('Sistema listo - Selecciona una prueba');
+    </script>
+</body>
+</html>

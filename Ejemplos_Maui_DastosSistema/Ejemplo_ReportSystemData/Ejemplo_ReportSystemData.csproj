@@ -25,6 +25,22 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net10.0-android|AnyCPU'">
 	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+
+		<!-- desactiva el fast deploy para incluir todo -->
+		<UseApkBundle>False</UseApkBundle>
+		<EmbedResourcesForDeployment>True</EmbedResourcesForDeployment>
+
+		<AndroidEnableProfiler>true</AndroidEnableProfiler>
+		<AndroidEnableStartupTracing>true</AndroidEnableStartupTracing>
+
+		<!-- Desactivar recursos satélite no usados (IMPORTANTE para tu problema) -->
+		<SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+
+		<!-- Logging más detallado -->
+		<AndroidEnableSGenConcurrent>false</AndroidEnableSGenConcurrent>
+
+		<!-- Para ver el tamaño de los assemblies -->
+		<AndroidUseAssemblyStore>false</AndroidUseAssemblyStore>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -37,6 +53,8 @@
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 		
 		<MauiFont Include="Resources\Fonts\*" />
+		<MauiFont Include="Resources\Fonts\OpenSans-Regular.ttf" />
+		<MauiFont Include="Resources\Fonts\OpenSans-Semibold.ttf" />
 		
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
@@ -50,6 +68,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Pages\ThrowExceptionPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\WebViewPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

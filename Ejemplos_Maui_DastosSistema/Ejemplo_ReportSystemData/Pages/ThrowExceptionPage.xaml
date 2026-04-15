@@ -14,7 +14,11 @@
             <Button Text="Android Crash Thread" Clicked="OnAndroidMainThreadCrashClicked"/>
             <Button Text="Android Crash JNI" Clicked="OnJniCrashClicked"/>
             <Button Text="Android Crash Seg" Clicked="OnSegfaultClicked"/>
-            
+
+            <Button Text="Forzar SIGKILL por ANR" Clicked="OnTriggerAndroidMainThreadCrashClicked"/>
+            <Button Text="Low Memory Killer" Clicked="OnTriggerNativeMemorySaturationClicked"/>
+            <Button Text="Thread Deadlock" Clicked="OnTriggerDeadlockCrashClicked"/>
+
             <Button Text="Volver" Clicked="OnVolverClicked"/>
         </VerticalStackLayout>
     </ScrollView>

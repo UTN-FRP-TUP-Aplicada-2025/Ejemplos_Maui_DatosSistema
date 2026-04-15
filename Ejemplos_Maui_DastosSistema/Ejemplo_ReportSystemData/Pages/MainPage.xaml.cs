@@ -28,7 +28,7 @@ public partial class MainPage : ContentPage
 
         try
         {
-            _logReporter.SendAndClearFileLogReportAsync().GetAwaiter().GetResult();
+            Task.Run( async () => await _logReporter.SendAndClearFileLogReportAsync() );            
         }
         catch (Exception ex)
         {
@@ -42,7 +42,7 @@ public partial class MainPage : ContentPage
 
         try
         {
-            _logReporter.SendCatlogReportAsync().GetAwaiter().GetResult();
+            Task.Run(async () => await _logReporter.SendCatlogReportAsync());
         }
         catch (Exception ex)
         {
@@ -50,8 +50,13 @@ public partial class MainPage : ContentPage
         }
     }
 
-    async private void OnThrowExceptionPageClicked(object? sender, EventArgs e)
+    async private void OnThrowExceptionClicked(object? sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(Pages.ThrowExceptionPage));
+    }
+
+    async private void OnWebViewClicked(object? sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(Pages.WebViewPage));
     }
 }

@@ -2,6 +2,9 @@
   <Project Path="Ejemplo_InfoApp/Ejemplo_InfoApp.csproj">
     <Deploy Solution="Debug|*" />
   </Project>
-  <Project Path="Ejemplo_ReportSystemData/Ejemplo_ReportSystemData.csproj" Id="aba5e6fd-af95-4d80-bb7c-25a5cac1b889" />
+  <Project Path="Ejemplo_ReportSystemData/Ejemplo_ReportSystemData.csproj" Id="aba5e6fd-af95-4d80-bb7c-25a5cac1b889">
+    <Deploy Solution="Debug|*" />
+  </Project>
   <Project Path="WebAPI_DatosSistema/WebAPI_DatosSistema.csproj" Id="bd77ca47-017a-4e01-85d4-7c51b2047d9e" />
+  <Project Path="WebBlazor_DatosSistema/WebBlazor_DatosSistema.csproj" Id="30217061-b749-4f50-b1aa-7e899cdd2648" />
 </Solution>

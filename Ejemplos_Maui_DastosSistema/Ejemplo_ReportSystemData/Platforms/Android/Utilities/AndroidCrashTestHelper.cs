@@ -47,6 +47,9 @@ public static class AndroidCrashTestHelper
         // Simulación de fallo de memoria mediante excepción de tipo bajo nivel
         throw new AccessViolationException("Crash de prueba: Violación de acceso a memoria");
     }
+
+
+    
 }
 #endif
 

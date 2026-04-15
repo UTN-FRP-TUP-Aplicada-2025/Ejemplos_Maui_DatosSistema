@@ -3,6 +3,6 @@
 public interface ILogReaderService
 {
     string ReadLogs();
-    string ReadLogs(int maxLines = 50);
+    Task<string> ReadLogsAsync(int maxLines = 100);
     void ClearLogs();
 }

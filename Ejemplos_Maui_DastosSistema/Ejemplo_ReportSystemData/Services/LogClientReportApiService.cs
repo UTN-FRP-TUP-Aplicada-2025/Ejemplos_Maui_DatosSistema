@@ -8,6 +8,9 @@ public class LogClientReportApiService
 {
     private readonly InfoSystemService _systemInfo=default!;
     private readonly HttpClient _httpClient;
+    
+    // ⭐ CONSTANTE PARA TIMEOUT
+    private const int TIMEOUT_SECONDS = 20;
 
     public LogClientReportApiService(InfoSystemService systemInfo, HttpClient httpClient)
     {
@@ -17,18 +20,26 @@ public class LogClientReportApiService
 
     async public Task SendCatlogReportAsync()
     {
-        string apiUrl = "https://hxbt1xfz-7236.brs.devtunnels.ms/api/ReporLogs";
+        //string apiUrl = "https://hxbt1xfz-7236.brs.devtunnels.ms/api/ReporLogs";
+        string apiUrl = "https://GeometriaFernando.somee.com/api/ReporLogs";
 
         var reporte = new ReportDTO
         {
+            Fecha = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+            VersionApp = AppInfo.VersionString,
+            CodeVersionApp = AppInfo.BuildString,
             Network = _systemInfo.GetNetworkType(),
             IdDevice = _systemInfo.GetDeviceId(),
+            OSDevice = DeviceInfo.VersionString,
+            PlatformDevice = DeviceInfo.Platform.ToString(),
+            ManufacturerDevice = DeviceInfo.Manufacturer,
+            IdiomDevice = DeviceInfo.Idiom.ToString(),
             InfoMemory = _systemInfo.GetMemoryInfoText(),
             InfoDevice = _systemInfo.GetDeviceInfoText(),
             InfoProcessor = _systemInfo.GetProcessorInfoText(),
-            InfoApp = "1.0.0",
-            Containt = _systemInfo.GetContentLogcat(),
-            TipoContaint = "LOGCAT",             
+            Containt = await _systemInfo.GetContentLogcatAsync(),
+            TipoContain = "LOGCAT",
+            URL = apiUrl
         };
 
         var jsonContent = JsonSerializer.Serialize(reporte);
@@ -43,9 +54,10 @@ public class LogClientReportApiService
         {
             //using var httpClient = new HttpClient();
             //httpClient.Timeout = TimeSpan.FromSeconds(30);
-            HttpResponseMessage response = await _httpClient.SendAsync(request);
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(TIMEOUT_SECONDS));
+            HttpResponseMessage response = await _httpClient.SendAsync(request, cts.Token);
 
-             if (response.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
                 Console.WriteLine("Reporte enviado exitosamente.");
             }
@@ -66,18 +78,26 @@ public class LogClientReportApiService
 
     async public Task SendAndClearFileLogReportAsync()
     {
-        string apiUrl = "https://hxbt1xfz-7236.brs.devtunnels.ms/api/ReporLogs";
+        //string apiUrl = "https://hxbt1xfz-7236.brs.devtunnels.ms/api/ReporLogs";
+        string apiUrl = "https://GeometriaFernando.somee.com/api/ReporLogs";
 
         var reporte = new ReportDTO
         {
+            Fecha = DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+            VersionApp = AppInfo.VersionString,
+            CodeVersionApp = AppInfo.BuildString,
             Network = _systemInfo.GetNetworkType(),
             IdDevice = _systemInfo.GetDeviceId(),
+            OSDevice = DeviceInfo.VersionString,
+            PlatformDevice = DeviceInfo.Platform.ToString(),
+            ManufacturerDevice = DeviceInfo.Manufacturer,
+            IdiomDevice = DeviceInfo.Idiom.ToString(),
             InfoMemory = _systemInfo.GetMemoryInfoText(),
             InfoDevice = _systemInfo.GetDeviceInfoText(),
             InfoProcessor = _systemInfo.GetProcessorInfoText(),
-            InfoApp = "1.0.0",
-            Containt = _systemInfo.GetContentFileLog(),
-            TipoContaint = "FILELOG",
+            Containt = await _systemInfo.GetContentFileLogAsync(),
+            TipoContain = "FILELOG",
+            URL = apiUrl
         };
 
         _systemInfo.ClearFileLog();
@@ -98,12 +118,12 @@ public class LogClientReportApiService
 #if DEBUG
             //var handler = new HttpClientHandler();
             //handler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
-           //using var httpClient = new HttpClient(handler);
+            //using var httpClient = new HttpClient(handler);
 #else
     //using var httpClient = new HttpClient();
 #endif
-
-            HttpResponseMessage response = await _httpClient.SendAsync(request);
+            using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(TIMEOUT_SECONDS));
+            HttpResponseMessage response = await _httpClient.SendAsync(request, cts.Token);
 
             if (response.IsSuccessStatusCode)
             {

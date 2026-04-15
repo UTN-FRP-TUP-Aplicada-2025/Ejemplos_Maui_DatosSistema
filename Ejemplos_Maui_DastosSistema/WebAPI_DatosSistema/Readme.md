@@ -1,4 +1,6 @@
 ﻿Microsoft.AspNetCore.OpenApi
+Swashbuckle.AspNetCore
+
 --SwaggerUI.OpenApi
 --Swashbuckle.AspNetCore
 

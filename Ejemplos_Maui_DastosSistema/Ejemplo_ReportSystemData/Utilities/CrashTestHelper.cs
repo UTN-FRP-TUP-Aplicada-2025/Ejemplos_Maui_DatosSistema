@@ -8,9 +8,8 @@ public class CrashTestHelper
     /// </summary>
     public static void TriggerMauiUnhandledExceptionCrash()
     {
-        // Fuerza un NullReferenceException que no será manejado
         string nullString = null;
-        int length = nullString.Length; // ❌ Crash aquí
+        int length = nullString.Length; // // Fuerza un NullReferenceException que no será manejado
     }
 
     /// <summary>

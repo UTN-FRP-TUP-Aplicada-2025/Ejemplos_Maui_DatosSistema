@@ -1,0 +1,79 @@
+﻿@page "/"
+@page "/index"
+
+<PageTitle>Home</PageTitle>
+
+@rendermode InteractiveServer
+@attribute [StreamRendering]
+
+
+<button class="btn btn-primary" @onclick="infiniteLoop">Infinite Loop (Bloqueo Total)</button>
+<button class="btn btn-primary" @onclick="recursiveLoop">Deep Recursion (Stack Overflow)</button>
+<button class="btn btn-primary" @onclick="memoryHog">Memory Hog (Consumo Masivo)</button>
+<button class="btn btn-primary" @onclick="busyWait">Busy Wait (CPU 100%)</button>
+<button class="btn btn-primary" @onclick="deadlockSimulation">Deadlock Simulation</button>
+<button class="btn btn-primary" @onclick="reset"> Reset</button>
+
+
+<div id="log"></div>
+
+<br/>
+
+<div id="status"></div>
+
+<br />
+
+@code{
+    // [Inject] 
+    @inject IJSRuntime JS
+
+    IJSObjectReference module=default!;
+
+    async protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import", "/Components/prueba.js");
+            
+        }
+    }
+
+    async protected Task infiniteLoop()
+    {
+        try
+        {
+            await module.InvokeVoidAsync("infiniteLoop");
+        }  catch (Exception ex) { }
+    }
+
+    async protected Task recursiveLoop()
+    {
+    try { await module.InvokeVoidAsync("recursiveLoop"); } catch (Exception ex) { }
+        
+    }
+
+    async protected Task memoryHog()
+    {
+            try { await module.InvokeVoidAsync("memoryHog"); } catch (Exception ex) { }
+
+        
+    }
+
+    async protected Task busyWait()
+    {
+        try { await module.InvokeVoidAsync("busyWait"); } catch (Exception ex) { }
+        
+    }
+
+    async protected Task deadlockSimulation()
+    {
+        try { await module.InvokeVoidAsync("deadlockSimulation"); } catch (Exception ex) { }
+        
+    }
+
+    async protected Task reset()
+    {
+        try { await module.InvokeVoidAsync("reset"); } catch (Exception ex) { }
+        
+    }
+}

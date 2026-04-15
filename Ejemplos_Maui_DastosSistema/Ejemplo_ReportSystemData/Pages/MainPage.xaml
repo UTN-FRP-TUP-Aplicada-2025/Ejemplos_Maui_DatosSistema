@@ -6,17 +6,15 @@
     <ScrollView>
         <VerticalStackLayout Padding="30,0" Spacing="25">
 
-            <Button x:Name="BtnFileLog" Text="Escribir File Log" SemanticProperties.Hint="Test API" Clicked="OnFileLogClicked"
-    HorizontalOptions="Fill" />
+            <Button x:Name="BtnFileLog" Text="Escribir File Log" SemanticProperties.Hint="Test API" Clicked="OnFileLogClicked" HorizontalOptions="Fill" />
             
-            <Button Text="Send File Log Test API" SemanticProperties.Hint="Test API" Clicked="OnFileLogTestAPIClicked"
-                HorizontalOptions="Fill" />
+            <Button Text="Send File Log Test API" SemanticProperties.Hint="Test API" Clicked="OnFileLogTestAPIClicked" HorizontalOptions="Fill" />
 
-            <Button Text="Send Logcat Test API" SemanticProperties.Hint="Test API" Clicked="OnLogcastTestAPIClicked"
-    HorizontalOptions="Fill" />
+            <Button Text="Send Logcat Test API" SemanticProperties.Hint="Test API" Clicked="OnLogcastTestAPIClicked" HorizontalOptions="Fill" />
 
-            <Button Text="Page Test Exception" SemanticProperties.Hint="Page Test Exception" Clicked="OnThrowExceptionPageClicked"
-HorizontalOptions="Fill" />
+            <Button Text="Page Test Exception" SemanticProperties.Hint="Page Test Exception" Clicked="OnThrowExceptionClicked" HorizontalOptions="Fill" />
+
+            <Button Text="Page Test WebView" SemanticProperties.Hint="WebView" Clicked="OnWebViewClicked" HorizontalOptions="Fill" />
 
         </VerticalStackLayout>
     </ScrollView>

@@ -7,6 +7,11 @@ public class LogReaderService : ILogReaderService
 
     private readonly string _filePath;
 
+    public async Task<string> ReadLogsAsync(int maxLines = DEFAULT_MAX_LINES)
+    {
+        return await Task.Run(() => ReadLogs(maxLines));
+    }
+
     public LogReaderService(string filePath) => _filePath = filePath;
 
     public string ReadLogs() => File.Exists(_filePath) ? File.ReadAllText(_filePath) : "Archivo vacío";

@@ -274,9 +274,9 @@ public class InfoSystemService
         return sb.ToString();
     }
 
-    public string GetContentFileLog()
+    async public Task<string> GetContentFileLogAsync()
     {
-        string lineas = _logReaderService.ReadLogs(600);
+        string lineas = await _logReaderService.ReadLogsAsync(700);
     
         return lineas;
     }
@@ -287,8 +287,8 @@ public class InfoSystemService
     }
 
 
-    public string GetContentLogcat()
+    async public Task<string> GetContentLogcatAsync()
     {
-        return _soLoggerService.GetLogsByLevel(LogcatLogLevel.ALL, 600);
+        return  await _soLoggerService.GetLogsByLevelAsync(LogcatLogLevel.ALL, 800);
     }
 }
